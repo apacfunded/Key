@@ -37,3 +37,8 @@ if (!calm) setInterval(() => { if (!document.hidden && !$('forge').closest('[hid
 // ---------- mobile launch button: hidden while the launch form is open ----------
 const onRoute = () => document.body.classList.toggle('on-launch', location.hash === '#launch');
 addEventListener('hashchange', onRoute); onRoute();
+
+// ---------- hero video: hold the still frame for viewers who prefer less motion ----------
+const vid = document.getElementById('heroVid');
+if (vid && calm) { vid.removeAttribute('autoplay'); vid.pause(); }
+else if (vid) vid.play?.().catch(() => { /* autoplay blocked: the poster frame stays */ });
