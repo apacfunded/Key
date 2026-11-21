@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Key: create your own custom CA</title>
+<meta name="description" content="Pick a prefix. Key grinds a contract address that starts with it, right in your browser, then launches your coin on pump.fun. No launch fee. You keep 80% of creator rewards; 20% buys back and burns $KEY.">
+<meta name="theme-color" content="#07090B">
+<meta property="og:title" content="Key: create your own custom CA">
+<meta property="og:description" content="Custom contract addresses for pump.fun coins. Free to launch. 20% of creator rewards buys back and burns $KEY.">
+<meta property="og:image" content="/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<link rel="preload" href="/key-word.webp" as="image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.95.8/lib/index.iife.min.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="glow" aria-hidden="true"></div>
+
+<header class="e-header">
+  <div class="in">
+    <a class="e-logo" href="#home" aria-label="Key home"><img src="/logo.png" alt="" width="44" height="44"><span>Key</span></a>
+    <nav class="e-nav" aria-label="Main">
+      <button data-nav="home">Coins</button>
+      <button data-nav="launch">Launch</button>
+      <button data-nav="me">My coins</button>
+      <button data-nav="etch">$KEY</button>
+    </nav>
+    <div class="right">
+      <a class="e-pill e-gloss sm hd-launch" href="#launch">Launch a coin</a>
+      <button class="e-pill e-cream sm" id="walletBtn" type="button">Connect wallet</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HOME -->
+<div data-route="home">
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="stage" aria-hidden="true">
+      <span class="bead d1"></span><span class="bead d2"></span><span class="bead d3"></span><span class="bead d4"></span>
+      <img class="word" src="/key-word.webp" alt="" width="1044" height="410">
+      <span class="floor"></span>
+    </div>
+    <span class="e-chip"><span class="e-dot"></span><span id="statusChip">Launches on pump.fun</span></span>
+    <h1 id="heroTitle">Create your own custom CA</h1>
+    <p class="lede">Pick a prefix. Your browser grinds a contract address that starts with it, then Key launches your coin on pump.fun. Same curve, same trading. An address people remember.</p>
+    <ul class="trust" aria-label="Key at a glance">
+      <li>No launch fee</li><li>Key made in your browser</li><li>Launches on pump.fun</li><li>20% of rewards burns $KEY</li>
+    </ul>
+
+    <div class="forge" id="forge">
+      <div class="forge-top">
+        <div class="e-field forge-in">
+          <label for="tryText">Try a prefix <span class="hint">· 1 to 5 characters</span></label>
+          <input id="tryText" class="e-input mono" maxlength="5" spellcheck="false" autocomplete="off" placeholder="KEY">
+        </div>
+        <a class="e-pill e-gloss" id="tryGo" href="#launch">Launch with this prefix</a>
+      </div>
+      <div class="forge-ca"><span class="ca-k">Your CA would look like</span><span class="e-ca" id="tryCa" aria-live="polite"></span></div>
+      <p class="forge-verdict" id="tryVerdict"></p>
+    </div>
+
+    <div class="ca-bar" id="coinBar">
+      <span class="ca-k">$KEY</span>
+      <span class="ca-v" id="coinCa">Posted here at launch</span>
+      <button type="button" class="e-pill e-cream sm" id="coinCopy" hidden>Copy</button>
+      <a class="e-pill e-gloss sm" id="coinBuy" target="_blank" rel="noopener" hidden>Buy on pump.fun</a>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="e-card stat"><span>Coins launched</span><span class="big" id="statTotal">0</span><span class="small">Launched through Key</span></div>
+    <div class="e-card stat"><span>Longest prefix</span><span class="big" id="statLongest">—</span><span class="small">Characters</span></div>
+    <div class="e-card stat"><span>Launch fee</span><span class="big">0</span><span class="small">You only pay pump.fun and network costs</span></div>
+    <div class="e-card stat"><span>You keep</span><span class="big">80%</span><span class="small">Of your coin's creator rewards</span></div>
+    <div class="e-card stat burn"><span>Buys back and burns $KEY</span><span class="big">20%</span><span class="small">Of every coin's creator rewards</span></div>
+  </div>
+
+  <section id="coins" class="e-card sec" aria-labelledby="coinsTitle">
+    <h2 id="coinsTitle">Coins on Key</h2>
+    <div id="coinList"></div>
+    <div id="coinEmpty">
+      <b>No coins yet</b>
+      <span class="muted">Be the first to launch one. Your coin shows up here the moment it launches.</span>
+      <a class="e-pill e-gloss sm" href="#launch">Launch a coin</a>
+    </div>
+  </section>
+
+  <div class="two">
+    <div class="e-night grinder" aria-label="The grinder">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+        <h2>The grinder</h2>
+        <span class="e-sub">how every CA is made</span>
+      </div>
+      <div class="roll">
+        <div class="e-roll" aria-hidden="true" id="rollRows"></div>
+        <div class="fade t"></div><div class="fade b"></div>
+        <div class="match">
+          <span class="ln"><b>KEY</b><span id="demoTail"></span></span>
+          <span class="tag">Match · KEY</span>
+        </div>
+      </div>
+      <div class="kv">
+        <div><span class="k">Odds for KEY</span><span class="v" id="demoOdds">—</span></div>
+        <div><span class="k">Typical time</span><span class="v">a few minutes</span></div>
+      </div>
+    </div>
+    <section class="e-card sec" aria-labelledby="howTitle">
+      <h2 id="howTitle">How it works</h2>
+      <div class="steps-how">
+        <p class="muted"><b>1. Pick a prefix.</b> Your ticker, a word, your initials. 1 to 5 characters.</p>
+        <p class="muted"><b>2. Your browser grinds the key.</b> It tries millions of random mint keys until one starts with your prefix. The key never leaves your device.</p>
+        <p class="muted"><b>3. Launch on pump.fun.</b> You approve once in your wallet and the coin goes live with your custom CA.</p>
+      </div>
+    </section>
+  </div>
+  <section class="e-card sec fees" aria-labelledby="feesTitle">
+    <span class="eyebrow">Creator rewards</span>
+    <h2 id="feesTitle">Every coin feeds the burn.</h2>
+    <p class="sec-lede">pump.fun pays creator rewards on every trade of your coin. On Key, those rewards are split the moment they are earned.</p>
+    <div class="split" role="img" aria-label="80 percent to the creator, 20 percent to buy back and burn KEY">
+      <div class="split-a"><b>80%</b><span>You, the creator</span></div>
+      <div class="split-b"><b>20%</b><span>Buy back and burn $KEY</span></div>
+    </div>
+    <div class="three">
+      <div><b>You keep 80%.</b><p>Paid to your wallet by pump.fun, the same way as any other coin.</p></div>
+      <div><b>20% buys $KEY.</b><p>That share goes to the buyback wallet and is used to buy $KEY off the market.</p></div>
+      <div><b>Bought $KEY is burned.</b><p>Burned coins are gone for good, so every coin launched here shrinks the $KEY supply.</p></div>
+    </div>
+  </section>
+
+  <div class="two">
+    <section class="e-card sec" aria-labelledby="cmpTitle">
+      <span class="eyebrow">The difference</span>
+      <h2 id="cmpTitle">Same coin. Your address.</h2>
+      <div class="cmp">
+        <div class="cmp-row"><span class="ca-k">Everywhere else</span><span class="e-ca cmp-dim">7xKp9vQmR4tB2nLs8dWfYc3hJgE5aZuN…pump</span></div>
+        <div class="cmp-row on"><span class="ca-k">On Key</span><span class="e-ca"><span class="e-pre">PEPE</span><span class="e-mid">R4tB2nLs8dWfYc3hJgE5aZuNpXqT6V…</span></span></div>
+      </div>
+      <p class="muted">Same bonding curve, same migration, same trading on pump.fun. Only the address changes.</p>
+    </section>
+    <section class="e-card sec" aria-labelledby="safeTitle">
+      <span class="eyebrow">Your keys</span>
+      <h2 id="safeTitle">Nothing leaves your device.</h2>
+      <ul class="checks">
+        <li><b>Made in your browser.</b> The mint key is ground on your device and never sent to Key.</li>
+        <li><b>Used once.</b> It signs the pump.fun create transaction, then it is thrown away.</li>
+        <li><b>No power afterward.</b> pump.fun removes mint and freeze authority at launch.</li>
+        <li><b>You approve everything.</b> Key cannot move funds. Your wallet shows each transaction first.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="e-card sec faq" aria-labelledby="faqTitle">
+    <h2 id="faqTitle" style="margin-bottom:10px">Questions</h2>
+    <details><summary>Is it still a pump.fun coin?</summary><p>Yes. Key only chooses the mint address. Your coin is created on pump.fun and trades there like any other: same bonding curve, same migration.</p></details>
+    <details><summary>Who holds the mint key?</summary><p>Only you, and only for a moment. It's generated in your browser, used once to sign the pump.fun create transaction, then thrown away. It's never sent to Key. pump.fun removes mint and freeze authority at launch, so the key has no power over your coin afterward.</p></details>
+    <details><summary>What does it cost?</summary><p>There is no launch fee. You pay pump.fun's normal costs, Solana network fees and any dev buy you choose. After launch, 20% of your coin's creator rewards buys back and burns $KEY, and you keep 80%.</p></details>
+    <details><summary>Where does the 20% go?</summary><p>To the buyback wallet. It is used to buy $KEY off the market, and the $KEY it buys is burned. Key keeps none of it.</p></details>
+    <details><summary>Why do some prefixes take longer?</summary><p>Each extra character is about 58× more work. The first letter matters too: Solana addresses start with some letters far more often than others, so the launch page shows the real odds for your exact prefix.</p></details>
+    <details><summary>Which characters can I use?</summary><p>Digits 1–9 and letters, except 0, capital O, capital I and lowercase l. Matching is case-sensitive unless you turn on "any case", which is much faster.</p></details>
+  </section>
+</div>
+
+<!-- LAUNCH -->
+<div data-route="launch" hidden>
+  <div class="launch-wrap">
+    <form id="launchForm" class="e-card" novalidate>
+      <h1>Launch a coin</h1>
+      <div class="grid2">
+        <div class="e-field"><label for="fName">Coin name</label><input id="fName" class="e-input" maxlength="32" required placeholder="Moon Cat"></div>
+        <div class="e-field"><label for="fTicker">Ticker</label><input id="fTicker" class="e-input mono" maxlength="10" required autocomplete="off" placeholder="MCAT"></div>
+      </div>
+      <div class="e-field">
+        <label for="fPrefix">CA prefix <span class="hint">· 1–5 characters</span></label>
+        <input id="fPrefix" class="e-input mono" maxlength="5" spellcheck="false" autocomplete="off" placeholder="MCAT">
+        <span class="e-err" id="prefixErr" hidden></span>
+        <label class="e-toggle"><input type="checkbox" id="fAnyCase"> Any case (much faster, e.g. "key", "KEY" or "KeY")</label>
+      </div>
+      <div class="e-field">
+        <label for="fImage">Image <span class="hint">· PNG, JPG, GIF or WEBP, under 4 MB</span></label>
+        <label class="e-drop" for="fImage"><img id="imgPreview" alt=""><span id="imgLabel" class="muted" style="font-size:15px;font-weight:700">Choose an image</span></label>
+        <input id="fImage" type="file" accept="image/png,image/jpeg,image/gif,image/webp" style="position:absolute;width:1px;height:1px;opacity:0">
+      </div>
+      <div class="e-field"><label for="fDesc">Description <span class="hint" id="descLeft">· 280 left</span></label><textarea id="fDesc" class="e-input" rows="3" maxlength="280" style="resize:vertical" placeholder="What's the coin about?"></textarea></div>
+      <div class="grid3">
+        <div class="e-field"><label for="fX">X link <span class="hint">· optional</span></label><input id="fX" class="e-input" type="url" placeholder="https://x.com/…"></div>
+        <div class="e-field"><label for="fTg">Telegram <span class="hint">· optional</span></label><input id="fTg" class="e-input" type="url" placeholder="https://t.me/…"></div>
+        <div class="e-field"><label for="fWeb">Website <span class="hint">· optional</span></label><input id="fWeb" class="e-input" type="url" placeholder="https://…"></div>
+      </div>
+      <div class="e-field"><label for="fBuy">Dev buy <span class="hint">· optional, in SOL</span></label><input id="fBuy" class="e-input mono" type="number" min="0" max="10" step="0.01" value="0"></div>
+
+      <div class="e-night odds">
+        <div class="row"><span>Odds</span><span class="e-ca" id="oddsVal">—</span></div>
+        <div class="row"><span>Estimated grind on this device</span><span class="e-ca" id="etaVal">—</span></div>
+        <span id="longWarn" hidden></span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:15px" class="muted">
+        <span>Total: <b style="color:var(--ink)" id="totalCost">Free</b> + pump.fun network costs</span>
+        <span style="font-size:14px">No launch fee. After launch you keep 80% of creator rewards; 20% buys back and burns $KEY.</span>
+      </div>
+      <button class="e-pill e-gloss big" id="goBtn" type="submit" style="align-self:flex-start">Grind &amp; launch on pump.fun</button>
+      <span class="e-err" id="formErr" hidden></span>
+    </form>
+
+    <aside class="launch-side">
+      <div class="e-card" style="padding:24px;display:flex;flex-direction:column;gap:16px">
+        <span class="e-sub" style="font-weight:700">Preview</span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <img id="pvImg" alt="">
+          <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><b id="pvName" style="font:800 20px var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Your coin</b><span class="e-ca muted" id="pvTicker" style="font-size:14px">$TICKER</span></div>
+        </div>
+        <div class="pv-ca"><span class="e-pre" id="pvPre"></span><span class="e-mid" id="pvTail"></span></div>
+      </div>
+      <div class="e-night" id="progressCard" hidden style="padding:24px;display:flex;flex-direction:column;gap:16px">
+        <b style="font:800 22px var(--display)">Launching</b>
+        <ol class="e-steps" id="steps">
+          <li data-s="grind"><span class="dot"></span><span>Grind your CA <span class="e-ca" id="grindStat" style="color:var(--muted)"></span></span></li>
+          <li data-s="upload"><span class="dot"></span><span>Upload image &amp; details</span></li>
+          <li data-s="build"><span class="dot"></span><span>Build pump.fun transaction</span></li>
+          <li data-s="sign"><span class="dot"></span><span>Approve in your wallet</span></li>
+          <li data-s="create"><span class="dot"></span><span>Create coin on pump.fun</span></li>
+          <li data-s="share"><span class="dot"></span><span>Set the 80/20 creator-reward split</span></li>
+          <li data-s="fee"><span class="dot"></span><span>List your coin on Key (0 SOL)</span></li>
+        </ol>
+        <div id="foundCa" hidden></div>
+        <span id="progressMsg" class="muted" style="font-size:15px;line-height:1.5"></span>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <button class="e-pill e-cream sm" id="cancelBtn" type="button">Cancel</button>
+          <button class="e-pill e-cream sm" id="retryBtn" type="button" hidden>Try again</button>
+        </div>
+      </div>
+      <div class="e-card" id="successCard" hidden style="padding:24px;display:flex;flex-direction:column;gap:14px">
+        <b style="font:800 26px var(--display)">Your coin is live.</b>
+        <div id="successCa"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <a class="e-pill e-gloss sm" id="pumpLink" target="_blank" rel="noopener">Open on pump.fun</a>
+          <button class="e-pill e-cream sm" id="copyCa" type="button">Copy CA</button>
+          <a class="e-pill e-cream sm" id="txLink" target="_blank" rel="noopener">View transaction</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- $KEY -->
+<div data-route="etch" hidden>
+  <section class="e-card sec" style="margin-top:36px;max-width:960px">
+    <span class="eyebrow">The coin behind Key</span>
+    <h1 style="margin:0;font-size:clamp(34px,4vw,44px);line-height:1">$KEY</h1>
+    <p class="sec-lede">20% of the creator rewards from every coin launched on Key buys $KEY off the market. Everything it buys is burned.</p>
+    <div class="etchCa"></div>
+  </section>
+</div>
+
+<!-- MY COINS -->
+<div data-route="me" hidden>
+  <section class="e-card sec" style="margin-top:36px;display:flex;flex-direction:column;gap:14px;max-width:960px">
+    <h1 style="margin:0;font-size:clamp(34px,4vw,44px);font-weight:800;line-height:1">My coins</h1>
+    <p id="meEmpty" style="margin:0;font-size:16px">Connect a wallet to see coins you launched on Key. Connecting only shares your public address.</p>
+    <div id="meList"></div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="in">
+    <div class="f-brand"><img src="/logo.png" alt="" width="40" height="40"><div><b>Key</b><span>Custom CAs for pump.fun coins.</span></div></div>
+    <nav class="f-nav" aria-label="Footer"><a href="#coins">Coins</a><a href="#launch">Launch</a><a href="#me">My coins</a><a href="#etch">$KEY</a></nav>
+    <span class="f-note">Not financial advice. Memecoins are volatile; only spend what you can lose. Key is not affiliated with pump.fun.</span>
+  </div>
+</footer>
+
+<a class="e-pill e-gloss mcta" href="#launch">Launch a coin</a>
+
+
+<script type="module" src="/app.js"></script>
+<script type="module" src="/key-extras.js"></script>
+</body>
+</html>

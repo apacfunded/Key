@@ -1,0 +1,10 @@
+{
+  "name": "key",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "22.x" },
+  "dependencies": {
+    "@pump-fun/pump-sdk": "3.2.0",
+    "@solana/web3.js": "1.95.8"
+  }
+}
