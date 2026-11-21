@@ -28,7 +28,7 @@ const randTail = (n) => Array.from({ length: n }, () => B58[Math.floor(Math.rand
 function route() {
   const r = (location.hash || '#home').slice(1);
   const coinMint = /^coin\/([1-9A-HJ-NP-Za-km-z]{32,44})$/.exec(r)?.[1];
-  const name = coinMint ? 'coin' : ['home', 'launch', 'etch', 'me', 'genkey'].includes(r) ? r : 'home';
+  const name = coinMint ? 'coin' : ['home', 'launch', 'etch', 'me'].includes(r) ? r : 'home';
   if (coinMint) showCoin(coinMint);
   document.querySelectorAll('[data-route]').forEach(el => { el.hidden = el.dataset.route !== name; });
   document.querySelectorAll('[data-nav]').forEach(b => b.classList.toggle('on', b.dataset.nav === (name === 'coin' ? 'home' : name)));
@@ -140,7 +140,7 @@ function renderMine() {
 async function loadConfig() {
   try { CFG = { ...CFG, ...(await (await fetch('/api/config')).json()), feeSol: 0, freeUntil: null }; } catch { }
   const ca = CFG.etchMint;
-  if (ca && $('coinCa')) { $('coinCa').textContent = ca; $('coinCopy').hidden = false; $('coinCopy').onclick = () => copy(ca); $('coinBuy').hidden = false; $('coinBuy').href = `https://pump.fun/coin/${ca}`; }
+  if (ca && $('coinCa')) { const n = /^key/i.test(ca) ? 3 : 0; $('coinCa').innerHTML = `<span class="e-pre">${esc(ca.slice(0, n))}</span>${esc(ca.slice(n))}`; if (!n) $('coinCa').firstChild.remove(); $('coinCopy').hidden = false; $('coinCopy').onclick = () => copy(ca); $('coinBuy').hidden = false; $('coinBuy').href = `https://pump.fun/coin/${ca}`; }
   document.querySelectorAll('.etchCa').forEach(el => {
     el.innerHTML = ca
       ? `<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><span class="e-ca" style="font-size:14px;word-break:break-all;background:#EEF3FA;border-radius:12px;padding:12px 14px">${esc(ca)}</span>
