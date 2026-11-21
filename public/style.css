@@ -317,3 +317,5 @@ footer .in{align-items:center;gap:18px 28px}
 .stage .bead,.stage .floor{display:none}
 @keyframes wordIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
 
+
+.main-tag{display:inline-block;font:500 12px var(--body);letter-spacing:.04em;color:#07090B;background:var(--orange);border-radius:999px;padding:1px 8px}

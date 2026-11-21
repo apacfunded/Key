@@ -81,7 +81,7 @@ function coinCard(c) {
     <span class="meta" style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1">
       <b style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(c.name)} <span style="font-weight:500;color:#3B4A63">$${esc(c.symbol)}</span></b>
       <span class="e-ca ca"><span class="e-pre">${pre}</span><span class="e-mid">${rest}…</span></span>
-      <span class="e-sub">${n ? `${n}-letter CA · ` : ''}${c.quote ? `${esc(pairTicker(c.quote))} pair · ` : ''}${ago(c.at)}</span>
+      <span class="e-sub">${n ? `${n}-letter CA · ` : ''}${c.quote ? `${esc(pairTicker(c.quote))} pair · ` : ''}${c.main ? '<span class="main-tag">Main coin</span>' : ago(c.at)}</span>
     </span></a>`;
 }
 // search / sort / filter state for the coin list
@@ -109,7 +109,7 @@ function renderCoins() {
     return [c.name, c.symbol, '$' + c.symbol, c.mint].some(x => String(x || '').toLowerCase().includes(view.q));
   });
   const by = { new: (a, b) => b.at - a.at, old: (a, b) => a.at - b.at, len: (a, b) => (b.prefix || '').length - (a.prefix || '').length || b.at - a.at, az: (a, b) => String(a.name).localeCompare(String(b.name)) }[view.sort];
-  rows = rows.sort(by);
+  rows = rows.sort((x, y) => (y.main ? 1 : 0) - (x.main ? 1 : 0) || by(x, y));
   $('coinList').innerHTML = rows.map(coinCard).join('');
   $('coinTools').hidden = coins.length === 0;
   $('coinEmpty').hidden = coins.length > 0;
@@ -231,7 +231,7 @@ function renderEtch() {
     const n = mint.toUpperCase().startsWith('KEY') ? 3 : 0;
     const burned = CFG.etchBurned, supply = CFG.etchSupply;
     el.innerHTML = `
-      <div class="e-cd-head"><img src="https://images.pump.fun/coin-image/${esc(mint)}?variant=256x256" alt="$KEY">
+      <div class="e-cd-head"><img src="/pfp.webp" alt="$KEY">
         <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1 1 320px">
           <span class="e-sub">Live on pump.fun</span>
           <div class="e-cd-ca"><span class="e-pre">${esc(mint.slice(0, n))}</span><span class="e-mid">${esc(mint.slice(n))}</span></div>
