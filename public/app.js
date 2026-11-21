@@ -28,7 +28,7 @@ const randTail = (n) => Array.from({ length: n }, () => B58[Math.floor(Math.rand
 function route() {
   const r = (location.hash || '#home').slice(1);
   const coinMint = /^coin\/([1-9A-HJ-NP-Za-km-z]{32,44})$/.exec(r)?.[1];
-  const name = coinMint ? 'coin' : ['home', 'launch', 'etch', 'me'].includes(r) ? r : 'home';
+  const name = coinMint ? 'coin' : ['home', 'launch', 'etch', 'me', 'genkey'].includes(r) ? r : 'home';
   if (coinMint) showCoin(coinMint);
   document.querySelectorAll('[data-route]').forEach(el => { el.hidden = el.dataset.route !== name; });
   document.querySelectorAll('[data-nav]').forEach(b => b.classList.toggle('on', b.dataset.nav === (name === 'coin' ? 'home' : name)));
