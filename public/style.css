@@ -320,3 +320,9 @@ footer .in{align-items:center;gap:18px 28px}
 
 .main-tag{display:inline-block;font:500 12px var(--body);letter-spacing:.04em;color:#07090B;background:var(--orange);border-radius:999px;padding:1px 8px}
 
+/* generate key (temporary) */
+.gk-result{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:18px}
+.gk-result .pv-ca{font-size:16px}
+.gk-secret:empty{display:none}
+.gk-secret{color:var(--ink);user-select:all}
+.gk-warn{margin:0;font-size:14px;line-height:1.5;color:#FFB37A;background:rgba(255,122,26,.08);border:1px solid rgba(255,122,26,.35);border-radius:12px;padding:10px 12px}
